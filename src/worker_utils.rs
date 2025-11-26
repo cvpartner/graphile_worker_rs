@@ -1,11 +1,11 @@
+use crate::tracing::add_tracing_info;
+use crate::{errors::GraphileWorkerError, sql::add_job::add_job, DbJob, Job, JobSpec};
 use graphile_worker_migrations::{migrate, MigrateError};
 use graphile_worker_task_handler::TaskHandler;
 use indoc::formatdoc;
 use serde::Serialize;
 use sqlx::{PgExecutor, PgPool};
 use tracing::Span;
-use crate::{errors::GraphileWorkerError, sql::add_job::add_job, DbJob, Job, JobSpec};
-use crate::tracing::add_tracing_info;
 
 /// Types of database cleanup tasks that can be performed on the Graphile Worker schema.
 ///

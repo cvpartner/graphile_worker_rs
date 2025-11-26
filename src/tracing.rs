@@ -62,7 +62,7 @@ mod functions {
             Err(_) => return,
         };
 
-        use opentelemetry::trace::{SpanContext, TraceFlags, TraceId, SpanId, TraceState};
+        use opentelemetry::trace::{SpanContext, SpanId, TraceFlags, TraceId, TraceState};
         use tracing_opentelemetry::OpenTelemetrySpanExt;
 
         let trace_id = TraceId::from_hex(&trace_info.trace_id);
@@ -74,13 +74,8 @@ mod functions {
             _ => return,
         };
 
-        let span_context = SpanContext::new(
-            trace_id,
-            span_id,
-            trace_flags,
-            true,
-            TraceState::default(),
-        );
+        let span_context =
+            SpanContext::new(trace_id, span_id, trace_flags, true, TraceState::default());
 
         Span::current().add_link(span_context);
     }
