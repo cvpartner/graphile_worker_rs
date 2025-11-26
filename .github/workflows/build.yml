@@ -53,7 +53,7 @@ jobs:
           toolchain: stable
       - uses: Swatinem/rust-cache@v2
       - name: Test
-        run: cargo test --all --features tracing,opentelemetry_0_31
+        run: cargo test --all --features opentelemetry_0_31
         env:
           DATABASE_URL: postgres://testuser:testpassword@localhost:5432/testdb
 
