@@ -6,6 +6,7 @@ use graphile_worker_job::{DbJob, Job};
 
 use super::task_identifiers::TaskDetails;
 
+#[tracing::instrument(skip_all, err, fields(otel.kind="client", db.system="postgresql"))]
 pub async fn get_job<'e>(
     executor: impl PgExecutor<'e>,
     task_details: &TaskDetails,
