@@ -26,6 +26,7 @@ jobs:
       - uses: actions-rust-lang/setup-rust-toolchain@1780873c7b576612439a134613cc4cc74ce5538c # 1.15.2
         with:
           components: clippy,rustfmt
+      - uses: mozilla-actions/sccache-action@7d986dd989559c6ecdb630a3fd2557667be217ad # 0.0.9
 
       - run: cargo fmt --all -- --check
       - run: cargo clippy
@@ -44,16 +45,16 @@ jobs:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-      - name: Install Rust toolchain
-        uses: actions-rs/toolchain@v1
+      - uses: runs-on/action@v2
         with:
-          profile: minimal
-          toolchain: stable
-      - uses: Swatinem/rust-cache@v2
-      - name: Test
-        run: cargo test --all --features opentelemetry_0_31
+          sccache: s3
+      - uses: actions/checkout@v6
+      - uses: actions-rust-lang/setup-rust-toolchain@1780873c7b576612439a134613cc4cc74ce5538c # 1.15.2
+        with:
+          components: clippy,rustfmt
+      - uses: mozilla-actions/sccache-action@7d986dd989559c6ecdb630a3fd2557667be217ad # 0.0.9
+
+      - run: cargo test --all --features opentelemetry_0_31
         env:
           DATABASE_URL: postgres://testuser:testpassword@localhost:5432/testdb
 
