@@ -8,9 +8,9 @@ mod functions {
 
 #[cfg(any(feature = "opentelemetry_0_30", feature = "opentelemetry",))]
 mod functions {
-    use opentelemetry::trace::TraceContextExt;
     #[cfg(feature = "opentelemetry_0_30")]
     use opentelemetry_30 as opentelemetry;
+    use opentelemetry::trace::TraceContextExt;
     use tracing::Span;
     #[cfg(feature = "opentelemetry_0_30")]
     use tracing_opentelemetry_30 as tracing_opentelemetry;

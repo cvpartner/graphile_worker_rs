@@ -32,8 +32,12 @@ jobs:
       - run: cargo clippy
 
   test:
-    timeout-minutes: 20
     runs-on: runs-on=${{ github.run_id }}/runner=2cpu-linux-x64/extras=s3-cache
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        feature_set: [ opentelemetry, opentelemetry_30 ]
     services:
       postgres:
         image: postgres:18
@@ -54,7 +58,8 @@ jobs:
           components: clippy,rustfmt
       - uses: mozilla-actions/sccache-action@7d986dd989559c6ecdb630a3fd2557667be217ad # 0.0.9
 
-      - run: cargo test --all --features opentelemetry_0_31
+      - name: Run tests (${{ matrix.feature_set }})
+        run: cargo test --all --features ${{ matrix.feature_set }}
         env:
           DATABASE_URL: postgres://testuser:testpassword@localhost:5432/testdb
 
